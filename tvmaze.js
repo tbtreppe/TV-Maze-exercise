@@ -20,7 +20,7 @@ const missingImage =
   "https://image.shutterstock.com/image-vector/upset-magnifying-glass-cute-not-260nw-1127749553.jpg";
 async function searchShows(query) {
   let response = await axios.get(
-    "http://api.tvmaze.com/search/shows?q=${ query}"
+    `http://api.tvmaze.com/search/shows?q=${query}`
   );
   let shows = response.data.map((result) => {
     let show = result.show;
@@ -52,7 +52,7 @@ function populateShows(shows) {
            <div class="card-body">
              <h5 class="card-title">${show.name}</h5>
              <p class="card-text">${show.summary}</p>
-             <img class="card-img-top" src="/path/to/image">
+             <img class="card-img-top" src= "${show.image || missingImage}">
              <button class="btn btn-primary get-episodes">Episodes</button>
            </div>
          </div>
@@ -85,7 +85,7 @@ $("#search-form").on("submit", async function handleSearch(evt) {
  */
 
 async function getEpisodes(id) {
-  let response = await axios.get("http://api.tvmaze.com/shows/${id}/episodes");
+  let response = await axios.get(`http://api.tvmaze.com/shows/${id}/episodes`);
   let episodes = response.data.map((episode) => ({
     id: episode.id,
     name: episode.name,
@@ -116,12 +116,12 @@ function populateEpisodes(episodes) {
   $("#episodes-area").show();
 }
 
-$("#show-list").on(
+$("#shows-list").on(
   "click",
   ".get-episodes",
   async function handleEpisodeSearch(evt) {
-    let showId = $(evt.target).closest(".Show").data("show-id");
-    let episodes = await getEpisodes(showId);
+    let showId = $(evt.target).closest(".show").data("show-id");
+    let episodes = await getEpisodes();
 
     populateEpisodes(episodes);
   }
