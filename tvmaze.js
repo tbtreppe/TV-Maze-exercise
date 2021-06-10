@@ -85,7 +85,9 @@ $("#search-form").on("submit", async function handleSearch(evt) {
  */
 
 async function getEpisodes(id) {
-  let response = await axios.get(`http://api.tvmaze.com/shows/${id}/episodes`);
+  let response = await axios.get(
+    `http://api.tvmaze.com/shows/${show.id}/episodes`
+  );
   let episodes = response.data.map((episode) => ({
     id: episode.id,
     name: episode.name,
@@ -120,8 +122,8 @@ $("#shows-list").on(
   "click",
   ".get-episodes",
   async function handleEpisodeSearch(evt) {
-    let showId = $(evt.target).closest(".show").data("show-id");
-    let episodes = await getEpisodes();
+    let showId = $(evt.target).closest(".Show").data("show-id");
+    let episodes = await getEpisodes(showId);
 
     populateEpisodes(episodes);
   }
